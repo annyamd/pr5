@@ -1,0 +1,10 @@
+com.company
+com.company.commands
+com.company.commands.templer
+com.company.controllers
+com.company.controllers.command_control
+com.company.db
+com.company.exceptions
+com.company.io
+com.company.io.inflaters
+com.company.model
