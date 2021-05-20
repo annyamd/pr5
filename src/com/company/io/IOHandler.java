@@ -4,19 +4,24 @@ package com.company.io;
 import com.company.controllers.command_control.ParamType;
 import com.company.exceptions.IncorrectInputException;
 import com.company.exceptions.InflateException;
+import com.company.exceptions.NoSymbolToReadException;
 import com.company.io.inflaters.EnumInflater;
 import com.company.io.inflaters.Inflater;
 
 public abstract class IOHandler { //reader, writer, object reader, object writer, good interface for it >_< ,____inflater class?//Object reader?
-    private Reader reader;// присваивается какой то тип, у хэндлера есть режим выводить коммантарии или нет
+    private CommandReader reader;// присваивается какой то тип, у хэндлера есть режим выводить коммантарии или нет
     private Writer writer;
+    private MBTerminal.ExceptionListener exceptionListener;
 
-    public IOHandler() {
-        reader = new Reader();
+    private boolean quitIfException = false;
+
+    public IOHandler(MBTerminal.ExceptionListener exceptionListener) {
+        reader = new CommandReader();
         writer = new Writer();
+        this.exceptionListener = exceptionListener;
     }
 
-    public Object readObject(ParamType objType) { //по ходу собирает пак для инфлетера
+    public Object readObject(ParamType objType) {
 
         Inflater inflater = getInflater(objType);
 
@@ -26,9 +31,9 @@ public abstract class IOHandler { //reader, writer, object reader, object writer
 
             Object val;
             while (true) {
-                try {   //gets errors of input
+                try {
                     if (type.isPrimitive()) {
-                        val = reader.readPrimitiveParam(type, Reader.WHOLE_STRING_MODE);
+                        val = reader.readlnPrimitiveParam(type);
                     } else {
                         if (type == ParamType.ENUM) {
                             val = reader.readEnum(((EnumInflater) inflater).getEnumClass());
@@ -38,16 +43,15 @@ public abstract class IOHandler { //reader, writer, object reader, object writer
                     }
                     inflater.setField(i, val);
                     break;
-                } catch (InflateException | IncorrectInputException e) {
-                    writer.writeln("Некоректный ввод данных. Повторите снова.");
+                } catch (InflateException | IncorrectInputException | NoSymbolToReadException e) {
+                    exceptionListener.onExceptionGet(e);
                 }
             }
         }
         return inflater.inflate();
     }
 
-
-    public Reader getReader() {
+    public CommandReader getReader() {
         return reader;
     }
 
@@ -57,4 +61,15 @@ public abstract class IOHandler { //reader, writer, object reader, object writer
 
     public abstract Inflater getInflater(ParamType type); //для каждого типа указываются свои инфлетеры
 
+    public void setReader(CommandReader reader){
+        this.reader = reader;
+    }
+
+    public void setWriter(Writer writer) {
+        this.writer = writer;
+    }
+
+    public void setExceptionListener(MBTerminal.ExceptionListener exceptionListener) {
+        this.exceptionListener = exceptionListener;
+    }
 }

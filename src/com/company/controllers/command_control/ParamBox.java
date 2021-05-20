@@ -1,6 +1,4 @@
-package com.company.commands.templer;
-
-import com.company.controllers.command_control.Param;
+package com.company.controllers.command_control;
 
 public class ParamBox { //легче обычный лист с обжектами???
 

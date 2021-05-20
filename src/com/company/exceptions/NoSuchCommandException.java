@@ -1,6 +1,6 @@
 package com.company.exceptions;
 
-public class NoSuchCommandException extends Exception{
+public class NoSuchCommandException extends IncorrectInputException{
 
     @Override
     public String toString() {

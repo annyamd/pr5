@@ -1,5 +1,6 @@
 package com.company.commands.templer;
 
+import com.company.controllers.command_control.ParamBox;
 import com.company.db.MusicBandHashSet;
 
 public abstract class Command {

@@ -3,7 +3,6 @@ package com.company.io.inflaters;
 import com.company.controllers.command_control.Param;
 import com.company.controllers.command_control.ParamType;
 import com.company.exceptions.InflateException;
-import com.company.model.MusicGenre;
 
 public class EnumInflater<T extends Enum> extends Inflater<T> {
 

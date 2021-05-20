@@ -1,13 +1,16 @@
 package com.company.commands;
 
 import com.company.commands.templer.Command;
-import com.company.commands.templer.ParamBox;
+import com.company.controllers.command_control.ParamBox;
+import com.company.io.MBTerminal;
 
 public class ExecuteScriptCommand extends Command {
 
     private String fileName;
+    private MBTerminal mbTerminal;
 
-    public ExecuteScriptCommand(ParamBox paramBox){
+    public ExecuteScriptCommand(MBTerminal mbTerminal, ParamBox paramBox){
+        this.mbTerminal = mbTerminal;
         if (paramBox.size() == 1){
             fileName = (String) paramBox.toUnpack().get().getVal();
         }
@@ -15,6 +18,7 @@ public class ExecuteScriptCommand extends Command {
 
     @Override
     public ParamBox execute() {
+        mbTerminal.executeScript(fileName);
         return null;
     }
 }

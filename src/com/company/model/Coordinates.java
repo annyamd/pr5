@@ -1,22 +1,18 @@
 package com.company.model;
 
-import com.company.exceptions.InflateException;
 import com.opencsv.bean.CsvBindByName;
-
-import java.util.Objects;
 
 public class Coordinates {
     @CsvBindByName(column = "coordinates_x")
-    private float x; //Максимальное значение поля: 645
+    private float x; /**Максимальное значение поля: 645*/
     @CsvBindByName(column = "coordinates_y")
-    private Integer y; //Значение поля должно быть больше -328, Поле не может быть null
+    private Integer y; /**Значение поля должно быть больше -328, Поле не может быть null*/
 
     public float getX() {
         return x;
     }
 
-    public void setX(float x) throws InflateException{
-        if (x > 646)  throw new InflateException();
+    public void setX(float x){
         this.x = x;
     }
 
@@ -24,8 +20,7 @@ public class Coordinates {
         return y;
     }
 
-    public void setY(Integer y) throws InflateException{
-        if (y == null || y <= -328)  throw new InflateException();
+    public void setY(Integer y){
         this.y = y;
     }
 

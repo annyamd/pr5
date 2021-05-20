@@ -1,6 +1,6 @@
 package com.company.controllers.command_control;
 
-public enum CommandType{//добавить всю инфу про команды для котманды про инфу
+public enum CommandType{
     ADD(ParamType.MUSIC_BOX),
     CLEAR(),
     EXIT(),
@@ -26,6 +26,14 @@ public enum CommandType{//добавить всю инфу про команды
 
     public ParamType[] getParamTypes(){
         return paramTypes;
+    }
+
+    public int getPrimitivesCount(){
+        int c = 0;
+        for (ParamType paramType : paramTypes){
+            if (paramType.isPrimitive()) c++;
+        }
+        return c;
     }
 
     @Override

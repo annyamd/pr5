@@ -1,16 +1,15 @@
 package com.company.io.inflaters;
 
-import com.company.controllers.command_control.Param;
-import com.company.controllers.command_control.ParamType;
 import com.company.exceptions.InflateException;
 import com.company.model.Coordinates;
 import com.company.model.MusicBand;
 import com.company.model.MusicGenre;
 import com.company.model.Studio;
+import com.company.controllers.command_control.Param;
+import com.company.controllers.command_control.ParamType;
+import com.company.verifiers.MusicBandVerifier;
 
-import java.time.LocalDateTime;
-
-public class MusicBandInflater extends Inflater<MusicBand>{ //создает новый класс Musicband по полям, здесь и хранится список полей
+public class MusicBandInflater extends Inflater<MusicBand>{
 
     private MusicBand musicBand;
 
@@ -24,30 +23,32 @@ public class MusicBandInflater extends Inflater<MusicBand>{ //создает н�
         });
 
         musicBand = new MusicBand();
+        musicBand.generateValues();
     }
 
     public void setField(int i, Object val) throws InflateException {
         String name = paramsToInflate[i].getName();
         switch (name){
             case "name":
-                if (val == null) musicBand.setName(null);
-                else musicBand.setName((String)val);
+                if (MusicBandVerifier.verifyName((String)val)) musicBand.setName((String) val);
+                else throw new InflateException();
                 break;
             case "coordinates":
-                if (val == null) musicBand.setCoordinates(null);
-                else musicBand.setCoordinates((Coordinates)val);
+                if (MusicBandVerifier.verifyCoordinates((Coordinates)val)) musicBand.setCoordinates((Coordinates)val);
+                else throw new InflateException();
                 break;
             case "number of participants":
                 if (val == null) throw new InflateException();
-                musicBand.setNumberOfParticipants((int) val);
+                if (MusicBandVerifier.verifyNumberOfParticipants((int)val)) musicBand.setNumberOfParticipants((int) val);
+                else throw new InflateException();
                 break;
             case "genre":
-                if (val == null) musicBand.setGenre(null);
-                else musicBand.setGenre((MusicGenre)val);
+                if (MusicBandVerifier.verifyGenre((MusicGenre) val)) musicBand.setGenre((MusicGenre) val);
+                else throw new InflateException();
                 break;
             case "studio":
-                if (val == null) musicBand.setStudio(null);
-            else musicBand.setStudio((Studio)val);
+                if (MusicBandVerifier.verifyStudio((Studio) val)) musicBand.setStudio((Studio) val);
+                else throw new InflateException();
                 break;
         }
     }

@@ -1,7 +1,7 @@
 package com.company.commands;
 
 import com.company.commands.templer.Command;
-import com.company.commands.templer.ParamBox;
+import com.company.controllers.command_control.ParamBox;
 import com.company.io.MBTerminal;
 
 public class ExitCommand extends Command {

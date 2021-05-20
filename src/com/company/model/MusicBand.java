@@ -1,44 +1,41 @@
 package com.company.model;
 
-import com.company.exceptions.InflateException;
+import com.company.verifiers.id.Identifiable;
+import com.company.verifiers.id.MusicBandIdHandler;
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvDate;
 import com.opencsv.bean.CsvRecurse;
-import com.opencsv.bean.validators.PreAssignmentValidator;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Formatter;
 
 ////пока сортирует только по id
 
-public class MusicBand implements Comparable<MusicBand>{
-
-    private static long idCounter = 0;
-
-    public MusicBand() {
-        id = idCounter++;
-        LocalDateTime now = LocalDateTime.now();
-    }
+public class MusicBand implements Comparable<MusicBand>, Identifiable {
 
     @CsvBindByName
-    private long id; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
+    private long id; /**Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически*/
     @CsvBindByName
-    private String name; //Поле не может быть null, Строка не может быть пустой
+    private String name; /**Поле не может быть null, Строка не может быть пустой*/
     @CsvRecurse
-    private Coordinates coordinates; //Поле не может быть null
+    private Coordinates coordinates; /**Поле не может быть null*/
     @CsvBindByName(column = "creation_date")
     @CsvDate("yyyy-MM-dd'T'HH:mm")
-    private java.time.LocalDateTime creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
+    private java.time.LocalDateTime creationDate; /**Поле не может быть null, Значение этого поля должно генерироваться автоматически*/
     @CsvBindByName(column = "number_of_participants")
-    private int numberOfParticipants; //Значение поля должно быть больше 0
+    private int numberOfParticipants; /**Значение поля должно быть больше 0*/
     @CsvBindByName
-    private MusicGenre genre; //Поле может быть null
+    private MusicGenre genre; /**Поле может быть null*/
     @CsvRecurse
-    private Studio studio; //Поле может быть null
+    private Studio studio; /**Поле может быть null*/
 
+    @Override
     public long getId() {
         return id;
+    }
+
+    public void generateValues(){
+        id = MusicBandIdHandler.getInstance().getNewId();
+        creationDate = LocalDateTime.now();
     }
 
     public String getName() {
@@ -65,28 +62,24 @@ public class MusicBand implements Comparable<MusicBand>{
         return studio;
     }
 
-    public void setName(String name) throws InflateException{
-        if (name == null || name.equals("")) throw new InflateException();
+    public void setName(String name){
         this.name = name;
     }
 
-    public void setCoordinates(Coordinates coordinates) throws InflateException{
-        if (coordinates == null) throw new InflateException();
+    public void setCoordinates(Coordinates coordinates){
         this.coordinates = coordinates;
     }
 
-    public void setId(long id) throws InflateException{
-        if (id <= 0)  throw new InflateException();
+    @Override
+    public void setId(long id){
         this.id = id;
     }
 
-    public void setCreationDate(LocalDateTime creationDate) throws InflateException{
-        if (creationDate == null)  throw new InflateException();
+    public void setCreationDate(LocalDateTime creationDate){
         this.creationDate = creationDate;
     }
 
-    public void setNumberOfParticipants(int numberOfParticipants) throws InflateException{
-        if (numberOfParticipants <= 0)  throw new InflateException();
+    public void setNumberOfParticipants(int numberOfParticipants){
         this.numberOfParticipants = numberOfParticipants;
     }
 
@@ -105,6 +98,11 @@ public class MusicBand implements Comparable<MusicBand>{
         if ((id - o.id) > 0) return 1;
         else if (id == o.id) return 0;
         else return -1;
+    }
+
+    @Override
+    public int hashCode() {
+        return ("" + id + name + coordinates + creationDate + numberOfParticipants + genre + studio).hashCode();
     }
 
     @Override

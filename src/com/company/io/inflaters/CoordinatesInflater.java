@@ -1,11 +1,10 @@
 package com.company.io.inflaters;
 
-import com.company.controllers.command_control.Param;
-import com.company.controllers.command_control.ParamType;
 import com.company.exceptions.InflateException;
 import com.company.model.Coordinates;
-import com.company.model.MusicGenre;
-import com.company.model.Studio;
+import com.company.verifiers.CoordinatesVerifier;
+import com.company.controllers.command_control.Param;
+import com.company.controllers.command_control.ParamType;
 
 public class CoordinatesInflater extends Inflater<Coordinates>{
 
@@ -31,11 +30,12 @@ public class CoordinatesInflater extends Inflater<Coordinates>{
         switch (name){
             case "coordinate_x":
                 if (val == null) throw new InflateException();
-                coordinates.setX((float) val);
+                if (CoordinatesVerifier.verifyX((float)val)) coordinates.setX((float) val);
+                else throw new InflateException();
                 break;
             case "coordinate_y":
-                if (val == null) coordinates.setY(null);
-                coordinates.setY((Integer) val);
+                if (CoordinatesVerifier.verifyY((Integer) val)) coordinates.setY((Integer) val);
+                else throw new InflateException();
                 break;
         }
     }

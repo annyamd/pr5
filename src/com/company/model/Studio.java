@@ -1,15 +1,12 @@
 package com.company.model;
 
-import com.company.exceptions.InflateException;
 import com.opencsv.bean.CsvBindByName;
-
-import java.util.Objects;
 
 public class Studio implements Comparable<Studio>{//Comparable
     @CsvBindByName(column = "studio_name")
-    private String name; //Поле может быть null
+    private String name; /**Поле может быть null*/
     @CsvBindByName(column = "studio_address")
-    private String address; //Поле не может быть null
+    private String address; /**Поле не может быть null*/
 
     public String getName() {
         return name;
@@ -23,8 +20,7 @@ public class Studio implements Comparable<Studio>{//Comparable
         return address;
     }
 
-    public void setAddress(String address) throws InflateException{
-        if (address == null)  throw new InflateException();
+    public void setAddress(String address){
         this.address = address;
     }
 
@@ -37,7 +33,7 @@ public class Studio implements Comparable<Studio>{//Comparable
 
     @Override
     public int compareTo(Studio o) {
-        if (o == null) return 2;
+        if (o == null) return 1;
         return name.compareTo((o).name);
     }
 }

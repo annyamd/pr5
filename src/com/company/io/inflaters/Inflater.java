@@ -1,7 +1,7 @@
 package com.company.io.inflaters;
 
-import com.company.controllers.command_control.Param;
 import com.company.exceptions.InflateException;
+import com.company.controllers.command_control.Param;
 
 public abstract class Inflater<T> {
     Param[] paramsToInflate;
